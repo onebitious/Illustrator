@@ -45,6 +45,10 @@ MAIN: { //ラベル
         return Math.round(number * myPow) / myPow;
     }
 
+    function getColor(_color) { //取得した色値をHEX値、大文字、ゼロパディング
+        var _color = zeroPad(_color.toString(16).toUpperCase());
+        return _color;
+    }
     /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
            ダイアログ表示とタグ、セレクタ取得
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
@@ -151,13 +155,10 @@ MAIN: { //ラベル
             graStoRedArr.push(graStoRed);
             graStoGreenArr.push(graStoGreen);
             graStoBlueArr.push(graStoBlue);
-            var graStoRedResult = graStoRedArr[i].toString(16).toUpperCase();
-            var graStoRedResult = zeroPad(graStoRedResult); //red
-            var graStoGreenResult = graStoGreenArr[i].toString(16).toUpperCase();
-            var graStoGreenResult = zeroPad(graStoGreenResult); //green
-            var graStoBlueResult = graStoBlueArr[i].toString(16).toUpperCase();
-            var graStoBlueResult = zeroPad(graStoBlueResult); //blue
-            var graStoColResult = "#" + graStoRedResult + graStoGreenResult + graStoBlueResult;
+            var graStoRedResult = getColor(graStoRedArr[i]); //red
+            var graStoGreenResult = getColor(graStoGreenArr[i]); //green
+            var graStoBlueResult = getColor(graStoBlueArr[i]); //blue
+            var graStoColResult = "#" + graStoRedResult + graStoGreenResult + graStoBlueResult;//カラーHEX値
             var myRampPoint = round((graSto[i].rampPoint), 2); //グラデーションスライダー
             var popGraResult = graStoColResult + " " + myRampPoint + "%";
             graStoArr.push(popGraResult);
