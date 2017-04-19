@@ -4,8 +4,12 @@
 未選択の場合、ドキュメント上の全てのフレームを処理する。
 フレームは長方形ツールで作成されたPathItemに限る。
 グラデーションポイントを含めカラーモードはRGBであること。
-ベンダープレフィックスは -webkit- のみ付与する。
-
+★動作確認★
+Windows 10
+・Firefox 52.0.2
+・Google Chrome 57.0.2987.133
+・IE 11.0.15063.0
+・Opera 44.0.2510.1218
 */
 var doc = app.activeDocument; //ドキュメント
 var obj = doc.pathItems; //ドキュメント上のオブジェクト
@@ -52,7 +56,9 @@ for (var i = 0, processObjLen = processObj.length; i < processObjLen; i++) {
         var graStoBlueArr = []; //blue配列
 
         var graSto = processObj[i].fillColor.gradient.gradientStops; //グラデーションポイント
-        var graDeg = round((processObj[i].fillColor.angle), 1); //角度
+        var illGraDeg = round((processObj[i].fillColor.angle), 1); //Illustratorの角度
+        var fixNum = 90; //Illustratorの角度と書き出されるCSSの結果の角度の和は常に90
+        var cssGraDeg = ((illGraDeg + fixNum) - 180) * -1; //CSSへ書き出す角度の計算
 
         for (var k = 0, graStoLen = graSto.length; k < graStoLen; k++) {
             var graStoRed = graSto[k].color.red;
@@ -71,8 +77,8 @@ for (var i = 0, processObjLen = processObj.length; i < processObjLen; i++) {
 
         }
 
-        var fillResult = "background: -webkit-linear-gradient(" + graDeg + "deg," + graStoArr + ");";
-        //-webkit- のベンダープレフィックス付けないとグラデーションが反転する
+        var fillResult = "background: linear-gradient(" + cssGraDeg + "deg," + graStoArr + ");";
+        //グラデーションプロパティ
 
     } else if (processObj[i].fillColor.typename == "RGBColor") { //単色の場合
         var redColor = getColor(processObj[i].fillColor.red);
