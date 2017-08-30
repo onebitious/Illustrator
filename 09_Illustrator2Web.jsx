@@ -1,24 +1,8 @@
-﻿/*
-仕様
-選択している矩形から、グラデーションかベタ塗りかを取得。
-未選択の場合、ドキュメント上の全てのフレームを処理する。
-フレームは長方形ツールで作成されたPathItemに限る。
-グラデーションポイントを含めカラーモードはRGBであること。
-★動作確認★
-Windows 10
-・Firefox 52.0.2
-・Google Chrome 57.0.2987.133
-・IE 11.0.15063.0
-・Microsoft Edge 40.15063.0.0
-・Opera 44.0.2510.1218
-
-*/
-var doc = app.activeDocument; //ドキュメント
+﻿var doc = app.activeDocument; //ドキュメント
 var obj = doc.pathItems; //ドキュメント上のオブジェクト
 var sel = doc.selection; //選択しているテキストフレーム
-
-var docWidth = doc.width; //ドキュメントの幅
-var docHeight = doc.height; //ドキュメントの高さ
+var docWidth=round((doc.width),3);//ドキュメントの幅
+var docHeight=round((doc.height),3);//ドキュメントの高さ
 
 var divArray = []; //div用の配列
 var posiXArray = []; //X座標用の配列
@@ -26,6 +10,12 @@ var posiYArray = []; //Y座標用の配列
 var widArray = []; //幅用の配列
 var heiArray = []; //高さの配列
 var cssArray = []; //CSS用の配列
+
+
+if(doc.documentColorSpace!=DocumentColorSpace.RGB){
+    alert("ドキュメントのカラーモードがRGBではありません。\r\nRGBにしてください。");
+    }
+
 
 if (sel.length == 0) {
     var processObj = obj; //フレームが未選択の場合、全てのフレームを対象にする
