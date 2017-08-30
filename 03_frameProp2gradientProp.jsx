@@ -9,9 +9,7 @@ Windows 10
 ・Firefox 52.0.2
 ・Google Chrome 57.0.2987.133
 ・IE 11.0.15063.0
-・Microsoft Edge 40.15063.0.0
 ・Opera 44.0.2510.1218
-
 */
 var doc = app.activeDocument; //ドキュメント
 var obj = doc.pathItems; //ドキュメント上のオブジェクト
