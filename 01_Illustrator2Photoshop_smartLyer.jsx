@@ -68,7 +68,7 @@ MAIN: { //ラベル
     exportOptions.writeLayers = true;
     exportOptions.resolution = 240;
     doc.exportFile(saveDir, type, exportOptions);
-var saveDir=saveDir.toString();
+//var saveDir=saveDir.toString();
     doc.close(); //閉じる
    
 }
@@ -77,7 +77,7 @@ var saveDir=saveDir.toString();
     bridgeTalk.target="photoshop";
     
     //alert(saveDir);
-    var openFileResult="var openFile = new File('"+saveDir+"');app.open(openFile);";
+    var openFileResult="var openFile = new File('"+saveDir+"');app.open(openFile);converSmartObj();";
     bridgeTalk.body=openFileResult;
     bridgeTalk.send();
     //alert("処理が終わりました");
@@ -107,20 +107,9 @@ function zeroPad02(num) {
     return num;
 }
 
-/*
-//▼photoshop スマートオブジェクトに変換
-MAIN: { //ラベル
-    if (documents.length == 0) { //ファイルが開いていない場合ダイアログを表示する
-        var selFile = File.openDialog("処理したいファイルを選んでください。");
-        if (selFile == null) {
-            alert("キャンセルされました。");
-            break MAIN; //キャンセルしたら処理を抜ける
-        } else {
-            var openFile = new File(selFile);
-            app.open(openFile);
-        }
-    }
 
+//▼photoshop スマートオブジェクトに変換
+function converSmartObj(){
     var doc = app.activeDocument;
     var _layer = doc.artLayers;
 
@@ -147,5 +136,4 @@ MAIN: { //ラベル
     }
     activeDocument.save();
     alert("全てのレイヤーをスマートオブジェクトに変換し、\r\n保存しました。");
-}
-*/
+    }
