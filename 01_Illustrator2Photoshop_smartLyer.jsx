@@ -68,19 +68,15 @@ MAIN: { //ラベル
     exportOptions.writeLayers = true;
     exportOptions.resolution = 240;
     doc.exportFile(saveDir, type, exportOptions);
-//var saveDir=saveDir.toString();
+    //var saveDir=saveDir.toString();
     doc.close(); //閉じる
-   
+
 }
 
-    var bridgeTalk=new BridgeTalk();
-    bridgeTalk.target="photoshop";
-    
-    //alert(saveDir);
-    var openFileResult="var openFile = new File('"+saveDir+"');app.open(openFile);converSmartObj();";
-    bridgeTalk.body=openFileResult;
-    bridgeTalk.send();
-    //alert("処理が終わりました");
+var bridgeTalk = new BridgeTalk();
+bridgeTalk.target = "photoshop";
+bridgeTalk.body = uneval(converSmartObj) + "(" + uneval(saveDir) + ")"; //関数実行。引数がある場合はこの形
+bridgeTalk.send()
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             関数定義
@@ -107,20 +103,19 @@ function zeroPad02(num) {
     return num;
 }
 
-
-//▼photoshop スマートオブジェクトに変換
-function converSmartObj(){
+//▼photoshop スマートオブジェクトに変換　※BridgeTalkでのPhotoshopコマンドなのでコメントは入れないこと。
+function converSmartObj(openData) {
+    var openFile = new File(openData);
+    app.open(openFile);
     var doc = app.activeDocument;
     var _layer = doc.artLayers;
-
     for (var i = 0, layerLength = _layer.length; i < layerLength; i++) {
-        //▼ScriptListaner使用。
         var idslct = charIDToTypeID("slct");
         var desc3 = new ActionDescriptor();
         var idnull = charIDToTypeID("null");
         var ref1 = new ActionReference();
         var idLyr = charIDToTypeID("Lyr ");
-        ref1.putName(idLyr, _layer[i].name); //ここの第二引数にレイヤー数分指定。nameプロパティは必要。
+        ref1.putName(idLyr, _layer[i].name);
         desc3.putReference(idnull, ref1);
         var idMkVs = charIDToTypeID("MkVs");
         desc3.putBoolean(idMkVs, false);
@@ -128,12 +123,10 @@ function converSmartObj(){
         var list1 = new ActionList();
         list1.putInteger(13);
         desc3.putList(idLyrI, list1);
-
-        executeAction(idslct, desc3, DialogModes.NO); //レイヤーを順次選択。
-
-        var idnewPlacedLayer = stringIDToTypeID("newPlacedLayer"); //スマートオブジェクトに変換。
+        executeAction(idslct, desc3, DialogModes.NO);
+        var idnewPlacedLayer = stringIDToTypeID("newPlacedLayer");
         executeAction(idnewPlacedLayer, undefined, DialogModes.NO);
     }
     activeDocument.save();
-    alert("全てのレイヤーをスマートオブジェクトに変換し、\r\n保存しました。");
-    }
+    alert("全てのレイヤーをスマートオブジェクトに変換し、保存しました。");
+}
